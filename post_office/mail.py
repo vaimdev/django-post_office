@@ -173,9 +173,8 @@ def get_queued():
      - Has scheduled_time lower than the current time or None
     """
     return Email.objects.filter(status=STATUS.queued) \
-        .select_related('template') \
         .filter(Q(scheduled_time__lte=now()) | Q(scheduled_time=None)) \
-        .order_by(*get_sending_order()).prefetch_related('attachments')[:get_batch_size()]
+        .order_by(*get_sending_order())[:get_batch_size()]
 
 
 def send_queued(processes=1, log_level=None):
